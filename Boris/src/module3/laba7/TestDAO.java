@@ -23,6 +23,7 @@ public class TestDAO {
             System.out.println(expense);
         }
 
+
         ReceiverDAO receiverDao = new ReceiverDAOImpl();
         Receiver receiver = new Receiver();
         receiver.setNum(10);
