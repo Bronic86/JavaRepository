@@ -105,18 +105,29 @@ public class ExpenseDAOImpl implements ExpenseDAO {
     }
 
     private void close(Connection connection, Statement statement, ResultSet resultSet) {
-        try {
-            if (resultSet != null) {
+
+        if (resultSet != null) {
+            try {
                 resultSet.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
-            if (statement != null) {
+        }
+        if (statement != null) {
+            try {
                 statement.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
-            if (connection != null) {
+        }
+        if (connection != null) {
+            try {
                 connection.close();
+
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
-        } catch (SQLException e) {
-            System.out.println("Close exception.");
         }
     }
+
 }
