@@ -81,7 +81,7 @@ public class Expense {
         return "ExpenseDAO{" +
                 "num=" + num +
                 ", paydate='" + paydate + '\'' +
-                ", receiver=" + receiver +
+                ", receiver1=" + receiver +
                 ", value=" + value +
                 '}';
     }

@@ -8,9 +8,6 @@ package module3.laba7;
 import module3.laba7.expense.Expense;
 import module3.laba7.expense.ExpenseDAO;
 import module3.laba7.expense.ExpenseDAOImpl;
-import module3.laba7.receiver.Receiver;
-import module3.laba7.receiver.ReceiverDAO;
-import module3.laba7.receiver.ReceiverDAOImpl;
 
 import java.util.List;
 
@@ -24,11 +21,11 @@ public class TestDAO {
         }
 
 
-        ReceiverDAO receiverDao = new ReceiverDAOImpl();
-        Receiver receiver = new Receiver();
-        receiver.setNum(10);
-        receiver.setName("Гипермаркет proStore");
-        System.out.println(receiverDao.addReceiver(receiver));
+//        ReceiverDAO receiverDao = new ReceiverDAOImpl();
+//        Receiver receiver1 = new Receiver();
+//        receiver1.setNum(10);
+//        receiver1.setName("Гипермаркет proStore");
+//        System.out.println(receiverDao.addReceiver(receiver1));
 
 
     }

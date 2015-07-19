@@ -1,35 +1,34 @@
-package module3.laba7.expense;
+package module3.laba7.receiver1;
 
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ExpenseDAOImpl implements ExpenseDAO {
+public class ReceiverDAOImpl implements ReceiverDAO {
     private String bdURL = "jdbc:mysql://localhost:3306/test_database";
     private String login = "root";
     private String password = "admin123";
 
+
     @Override
-    public Expense getExpense(int num) {
-        String query = "SELECT * FROM expenses WHERE num = " + num;
-        return findExpenseForNum(query);
+    public Receiver getReceiver(int num) {
+        String query = "SELECT * FROM receivers WHERE num = " + num;
+        return findReceiverForNum(query);
     }
 
-    private Expense findExpenseForNum(String query) {
+    private Receiver findReceiverForNum(String query) {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        Expense expense = new Expense();
+        Receiver receiver = new Receiver();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(bdURL, login, password);
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
-                expense.setNum(resultSet.getInt("num"));
-                expense.setPaydate(resultSet.getDate("paydate").toString());
-                expense.setReceiver(resultSet.getInt("receiver1"));
-                expense.setValue(resultSet.getDouble("value"));
+                receiver.setNum(resultSet.getInt("num"));
+                receiver.setName(resultSet.getString("name"));
             }
         } catch (ClassNotFoundException e) {
             System.out.println("Class \"Driver\" not found.");
@@ -38,32 +37,30 @@ public class ExpenseDAOImpl implements ExpenseDAO {
         } finally {
             close(connection, statement, resultSet);
         }
-        return expense;
+        return receiver;
     }
 
     @Override
-    public ArrayList<Expense> getExpenses() {
-        String query = "SELECT * FROM expenses";
-        return findExpenses(query);
+    public ArrayList<Receiver> getReceivers() {
+        String query = "SELECT * FROM receivers";
+        return findReceivers(query);
     }
 
-    private ArrayList<Expense> findExpenses(String query) {
+    private ArrayList<Receiver> findReceivers(String query) {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        ArrayList<Expense> expenses = new ArrayList<>();
+        ArrayList<Receiver> receivers = new ArrayList<>();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(bdURL, login, password);
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                Expense expense = new Expense();
-                expense.setNum(resultSet.getInt("num"));
-                expense.setPaydate(resultSet.getDate("paydate").toString());
-                expense.setReceiver(resultSet.getInt("receiver1"));
-                expense.setValue(resultSet.getDouble("value"));
-                expenses.add(expense);
+                Receiver receiver = new Receiver();
+                receiver.setNum(resultSet.getInt("num"));
+                receiver.setName(resultSet.getString("name"));
+                receivers.add(receiver);
             }
         } catch (ClassNotFoundException e) {
             System.out.println("Class \"Driver\" not found");
@@ -72,16 +69,16 @@ public class ExpenseDAOImpl implements ExpenseDAO {
         } finally {
             close(connection, statement, resultSet);
         }
-        return expenses;
+        return receivers;
     }
 
     @Override
-    public int addExpense(Expense expense) {
-        String query = "INSERT INTO expenses (num, paydate, receiver1, value) VALUES (?, ?, ?, ?)";
-        return addRecording(query, expense);
+    public int addReceiver(Receiver receiver) {
+        String query = "INSERT INTO receivers (num, name) VALUES (?, ?)";
+        return addRecording(query, receiver);
     }
 
-    private int addRecording(String query, Expense expense) {
+    private int addRecording(String query, Receiver receiver) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -89,10 +86,8 @@ public class ExpenseDAOImpl implements ExpenseDAO {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(bdURL, login, password);
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, expense.getNum());
-            preparedStatement.setDate(2, Date.valueOf(expense.getPaydate()));
-            preparedStatement.setInt(3, expense.getReceiver());
-            preparedStatement.setDouble(4, expense.getValue());
+            preparedStatement.setInt(1, receiver.getNum());
+            preparedStatement.setString(2, receiver.getName());
             return preparedStatement.executeUpdate();
         } catch (ClassNotFoundException e) {
             System.out.println("Class \"Driver\" not found");
@@ -104,30 +99,20 @@ public class ExpenseDAOImpl implements ExpenseDAO {
         return -1;
     }
 
+
     private void close(Connection connection, Statement statement, ResultSet resultSet) {
-
-        if (resultSet != null) {
-            try {
+        try {
+            if (resultSet != null) {
                 resultSet.close();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
             }
-        }
-        if (statement != null) {
-            try {
+            if (statement != null) {
                 statement.close();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
             }
-        }
-        if (connection != null) {
-            try {
+            if (connection != null) {
                 connection.close();
-
-            } catch (SQLException e1) {
-                e1.printStackTrace();
             }
+        } catch (SQLException e) {
+            System.out.println("Close exception.");
         }
     }
-
 }
